@@ -1,4 +1,4 @@
-# client-server-front - React JS, Node.js, MySQL
+# client-server-front - React JS, Node JS, MySQL
 
 In the project directory, you can run:
  `npm start`
