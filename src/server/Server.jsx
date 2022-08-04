@@ -18,6 +18,7 @@ export default function Server({ dateValue, start, finish }) {
 	const [goodTrain, setGoodTrain] = useState([]);
 	const [otherTrain, setOtherTrain] = useState([]);
 	const [isRequest, setIsRequest] = useState(false);
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		setIsRequest(true);
@@ -28,8 +29,10 @@ export default function Server({ dateValue, start, finish }) {
 				day: day,
 			})
 			.then((response) => {
-				console.log(response.data);
 				setGoodTrain(response.data);
+			})
+			.catch((error) => {
+				setError(error.message);
 			});
 	}, [day, finish, start]);
 
@@ -41,9 +44,11 @@ export default function Server({ dateValue, start, finish }) {
 				day: day,
 			})
 			.then((response) => {
-				console.log(response.data);
 				setOtherTrain(response.data);
 				setIsRequest(false);
+			})
+			.catch((error) => {
+				setError(error.message);
 			});
 	}, [day, finish, start]);
 
@@ -56,6 +61,12 @@ export default function Server({ dateValue, start, finish }) {
 		return (
 			<h2 className='output-body' style={{ color: 'red' }}>
 				Введіть коректні дані!
+			</h2>
+		);
+	} else if (error) {
+		return (
+			<h2 className='output-body' style={{ color: 'red' }}>
+				{error} - run server!
 			</h2>
 		);
 	} else {
