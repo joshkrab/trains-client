@@ -3,10 +3,13 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+html {
+		height: 100%;
+}
 
 body {
 	width: 100%;
-	min-height: 100vh;
+	height: 100%;
 	background-color: rgb(153, 145, 145);
 }
 
@@ -18,7 +21,7 @@ body {
 
 .app {
 	height: 100%;
-	max-width: 600px;
+	max-width: 800px;
 	margin: 0 auto;
 	display: flex;
 	justify-content: center;
@@ -29,7 +32,7 @@ body {
 	text-align: center;
 	padding: 20px;
 	width: 100%;
-	min-height: 80vh;
+	min-height: 90vh;
 	background-color: #fff;
 	border-radius: 10px;
 	background: url('../img/train-logo.png') #fff 5px 5px no-repeat;
@@ -52,6 +55,41 @@ body {
 	margin: 0px 0px 10px 0px;
 }
 
+.cities-row {
+  display: flex;
+	justify-content:space-evenly;
+}
+
+.finish-data {
+	margin: 0px 0px 20px 0px;
+}
+
+.search-panel {
+	margin: 20px 0px 20px 0px;
+}
+
+.sort-panel {
+	margin: 0px 0px 20px 0px;
+}
+
+.trais-output {
+	padding: 6px;
+	border: 1px solid teal;
+	height: 360px;
+	overflow-y: auto;
+}
+.train-card {
+	padding: 10px;
+	border: 1px solid black;
+	margin: 0px 0px 6px 0px;
+}
+.start-data {
+	margin: 0px 0px 10px 0px;
+}
+.start-data p, .finish-data p {
+		display: inline;
+		margin: 0px 10px 0px 0px;
+	}
 @media (max-width: 600px) {
 	.form {
 		padding: 10px;
@@ -62,5 +100,10 @@ body {
 
 	#root {
 		padding: 10px 10px;
+	}
+
+	.start-data p, .finish-data p {
+		display: block;
+		margin: 0px 0px 4px 0px;
 	}
 }

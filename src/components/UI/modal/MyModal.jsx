@@ -1,27 +1,139 @@
 // rfc
-import React from 'react';
+import React, { useState } from 'react';
 import classes from './MyModal.module.css';
+import MySelect from '../select/MySelect';
+import MyInput from '../input/MyInput';
+import MyButton from '../button/MyButton';
 
-const MyModal = ({ children, visible, setVisible }) => {
+const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
+   const [start, setStart] = useState('Start');
+   const [finish, setFinish] = useState('Finish');
+   const [startDate, setStartDate] = useState('');
+   const [finishDate, setFinishDate] = useState('');
+   const [startTime, setStartTime] = useState('');
+   const [finishTime, setFinishTime] = useState('');
    const rootClasses = [classes.myModal];
+   const newTrain = {
+      startCity: start,
+      finishCity: finish,
+      startDate: `${startDate}T${startTime}`, // "2022-12-30T10:00",
+      finishDate: `${finishDate}T${finishTime}`
+   };
+
+   var today = new Date();
+   var dd = today.getDate();
+   var mm = today.getMonth() + 1;
+   var yyyy = today.getFullYear();
+   if (dd < 10) {
+      dd = '0' + dd;
+   }
+   if (mm < 10) {
+      mm = '0' + mm;
+   }
+   today = yyyy + '-' + mm + '-' + dd;
 
    // Додаємо перевірку на видимість:
    if (visible) {
       rootClasses.push(classes.active);
    }
+   if (train) {
+      console.log(train);
+   }
 
    return (
       // .join(' ') - метод повертає рядок, тобто два класа з'єднає через пробіл:
-      <div className={rootClasses.join(' ')} onClick={() => setVisible(false)}>
+      <div className={rootClasses.join(' ')} >
          {/* Пропс чілдрен переносить контент з тега */}
-         <div
-            className={classes.myModalContent}
-            onClick={(event) => {
-               // Прибираємо вспливання події, щоб на вікно не діяла подія батька
-               event.stopPropagation();
-            }}
-         >
-            {children}
+         <div className={classes.myModalContent}>
+            <div className="cities-row">
+               <div className="cities-start">
+                  <p>Start City:</p>
+                  <MySelect
+                     options={[
+                        { value: 'Kyiv', name: 'Kyiv' },
+                        { value: 'Lviv', name: 'Lviv' },
+                        { value: 'Kharkiv', name: 'Kharkiv' },
+                        { value: 'Odesa', name: 'Odesa' },
+                        { value: 'Ternopil', name: 'Ternopil' },
+                     ]}
+                     defaultValue={'Start'}
+                     value={start}
+                     onChange={(value) => {
+                        setStart(value);
+                     }}
+                  />
+               </div>
+               <div className="cities-finish">
+                  <p>Finish City:</p>
+                  <MySelect
+                     options={[
+                        { value: 'Kyiv', name: 'Kyiv' },
+                        { value: 'Lviv', name: 'Lviv' },
+                        { value: 'Kharkiv', name: 'Kharkiv' },
+                        { value: 'Odesa', name: 'Odesa' },
+                        { value: 'Ternopil', name: 'Ternopil' },
+                     ]}
+                     defaultValue={'Finish'}
+                     value={finish}
+                     onChange={(value) => {
+                        setFinish(value);
+                     }}
+                  />
+               </div>
+
+            </div>
+            
+            <div className='start-data'>
+               <p>
+                  Start date and time:
+               </p>
+               <MyInput
+                  onChange={(event) => {
+                     setStartDate(event.target.value);
+                  }}
+                  className='dat-input'
+                  type='date'
+                  min={today}
+               />
+               <MyInput
+                  onChange={(event) => {
+                     setStartTime(event.target.value);
+                  }}
+                  className='time-input'
+                  type='time'
+               />
+            </div>
+
+            <div className='finish-data'>
+               <p>
+                  Finish date and time:
+               </p>
+               <MyInput
+                  onChange={(event) => {
+                     setFinishDate(event.target.value);
+                  }}
+                  className='dat-input'
+                  type='date'
+                  min={today}
+               />
+               <MyInput
+                  onChange={(event) => {
+                     setFinishTime(event.target.value);
+                     console.log(event.target.value);
+                  }}
+                  className='time-input'
+                  type='time'
+               />
+            </div>
+            <MyButton
+               onClick={(event) => {
+                  event.preventDefault();
+                  runRequest(newTrain);
+                  setVisible(false);
+               }}
+            >
+               { buttonName }
+            </MyButton>
          </div>
       </div>
    );

@@ -16,12 +16,12 @@ const MySelect = ({ options, defaultValue, value, onChange }) => {
 			<option disabled value={defaultValue}>
 				{defaultValue}
 			</option>
-			{options.map((item) => (
-				// Записуємо в кожну опцію по одному елементу масива options: value та name
-				<option key={item.value} value={item.value}>
+			{options.map((item) => {
+								return <option key={item.value} value={item.value}>
 					{item.name}
 				</option>
-			))}
+				}
+			)};
 		</select>
 	);
 };
