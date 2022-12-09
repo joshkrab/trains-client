@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/trains-client/static/css/main.5ae19e00.css",
+    "main.js": "/trains-client/static/js/main.4740d2cb.js",
+    "static/media/train-logo.png": "/trains-client/static/media/train-logo.406ef58e34e3e0dce640.png",
+    "index.html": "/trains-client/index.html",
+    "main.5ae19e00.css.map": "/trains-client/static/css/main.5ae19e00.css.map",
+    "main.4740d2cb.js.map": "/trains-client/static/js/main.4740d2cb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5ae19e00.css",
+    "static/js/main.4740d2cb.js"
+  ]
+}
