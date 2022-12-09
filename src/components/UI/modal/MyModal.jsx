@@ -36,9 +36,6 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
    if (visible) {
       rootClasses.push(classes.active);
    }
-   if (train) {
-      console.log(train);
-   }
 
    return (
       // .join(' ') - метод повертає рядок, тобто два класа з'єднає через пробіл:
@@ -58,6 +55,7 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
                      ]}
                      defaultValue={'Start'}
                      value={start}
+                     train={train?.startCity}
                      onChange={(value) => {
                         setStart(value);
                      }}
@@ -75,7 +73,9 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
                      ]}
                      defaultValue={'Finish'}
                      value={finish}
+                     train={train?.finishCity}
                      onChange={(value) => {
+                        
                         setFinish(value);
                      }}
                   />
@@ -89,6 +89,7 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
                </p>
                <MyInput
                   onChange={(event) => {
+                     event.preventDefault();
                      setStartDate(event.target.value);
                   }}
                   className='dat-input'
@@ -97,6 +98,7 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
                />
                <MyInput
                   onChange={(event) => {
+                     event.preventDefault();
                      setStartTime(event.target.value);
                   }}
                   className='time-input'
@@ -110,6 +112,7 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
                </p>
                <MyInput
                   onChange={(event) => {
+                     event.preventDefault();
                      setFinishDate(event.target.value);
                   }}
                   className='dat-input'
@@ -118,8 +121,8 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
                />
                <MyInput
                   onChange={(event) => {
+                     event.preventDefault();
                      setFinishTime(event.target.value);
-                     console.log(event.target.value);
                   }}
                   className='time-input'
                   type='time'
@@ -133,6 +136,14 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
                }}
             >
                { buttonName }
+            </MyButton>
+            <MyButton
+               onClick={(event) => {
+                  event.preventDefault();
+                  setVisible(false);
+               }}
+            >
+               Cancel
             </MyButton>
          </div>
       </div>

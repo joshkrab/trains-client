@@ -7,17 +7,16 @@ import { v4 as uuid } from 'uuid';
 
 export default function Form() {
 
-
 	const [trains, setTrains] = useState([]);
 	const [addVisible, setAddVisible] = useState(false);
 	const [editVisible, setEditVisible] = useState(false);
 	const [currentTrain, setCurrentTrain] = useState({});
+	const [searchValue, setSearchValue] = useState('');
 
 	useEffect(() => {
 		axios
 			.get('https://trains-test.herokuapp.com')
 			.then((response) => {
-				console.log(response.data);
 				setTrains(response.data);
 			})
 			.catch((error) => {
@@ -30,7 +29,6 @@ export default function Form() {
 			axios
 			.post('https://trains-test.herokuapp.com', train)
 			.then((response) => {
-				console.log(response.data);
 				setTrains(response.data);
 			})
 			.catch((error) => {
@@ -38,10 +36,40 @@ export default function Form() {
 			});
 	}
 	function editTrain(train) {
+		let trainId = currentTrain._id;
 			axios
-			.put('https://trains-test.herokuapp.com', train)
+			.patch(`https://trains-test.herokuapp.com?id=${trainId}`, train)
 			.then((response) => {
-				console.log(response.data);
+				setTrains(response.data);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
+	}
+	function deleteTrain(trainId) {
+			axios
+			.delete(`https://trains-test.herokuapp.com?id=${trainId}`)
+			.then((response) => {
+				setTrains(response.data);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
+	}
+	function searchTrains(value) {
+			axios
+			.get(`https://trains-test.herokuapp.com?search=${value}`)
+			.then((response) => {
+				setTrains(response.data);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
+	}
+	function sortTrains(value) {
+			axios
+			.get(`https://trains-test.herokuapp.com?sort=${value}`)
+			.then((response) => {
 				setTrains(response.data);
 			})
 			.catch((error) => {
@@ -54,28 +82,41 @@ export default function Form() {
 			<div className="search-panel">
 				<h3>Search all trains by station:</h3>
 				<div>
-					<MyInput/>
+					<MyInput value={searchValue} onChange={(event) => {
+						event.preventDefault();
+						setSearchValue(event.target.value);
+          }}/>
 				</div>
 					<MyButton
 						onClick={(event) => {
-							event.preventDefault();
+						event.preventDefault();
+						searchTrains(searchValue);
 						}}
 					>Search</MyButton>
+					<MyButton
+						onClick={(event) => {
+						event.preventDefault();
+						searchTrains('');
+						setSearchValue('');
+						}}
+					>All trains</MyButton>
 			</div>
 
-			{addVisible && <MyModal visible={addVisible} setVisible={setAddVisible} buttonName={'Add train'} runRequest={ addTrain } />}
+			{addVisible && <MyModal visible={addVisible} setVisible={setAddVisible} buttonName={'Add train'} train='' runRequest={ addTrain } />}
 			{editVisible && <MyModal visible={editVisible} setVisible={setEditVisible} buttonName={'Save'} train={ currentTrain } runRequest={ editTrain }/>}
 			
 				<div className="sort-panel">
 					<h2>Train schedule:</h2>
 				<MyButton
 						onClick={(event) => {
-							event.preventDefault();
+						event.preventDefault();
+						sortTrains('startDate');
 						}}
 				>Sort by date</MyButton>
 				<MyButton
 						onClick={(event) => {
-							event.preventDefault();
+						event.preventDefault();
+						sortTrains('startCity');
 						}}
 				>Sort by station</MyButton>
 				<MyButton
@@ -106,7 +147,8 @@ export default function Form() {
 							</MyButton>
 							<MyButton
 									onClick={(event) => {
-									event.preventDefault();
+										event.preventDefault();
+										deleteTrain(train._id)
 									}}>Delete
 							</MyButton>
 						</div>

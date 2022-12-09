@@ -2,7 +2,7 @@
 import React from 'react';
 import classes from './MySelect.module.css';
 
-const MySelect = ({ options, defaultValue, value, onChange }) => {
+const MySelect = ({ options, defaultValue, value, onChange, train }) => {
 	return (
 		<select
 			//value={defaultValue}
@@ -11,13 +11,20 @@ const MySelect = ({ options, defaultValue, value, onChange }) => {
 			className={classes.mySelect}
 			name=''
 			id=''
-			value={value}
+			defaultValue={train ? train : defaultValue}
+			//value={train && value}
+			
 		>
 			<option disabled value={defaultValue}>
 				{defaultValue}
 			</option>
 			{options.map((item) => {
-								return <option key={item.value} value={item.value}>
+				if (item.value === train) {
+					return <option key={item.value} value={item.value}>
+					{item.name}
+				</option>
+				}
+				return <option key={item.value} value={item.value}>
 					{item.name}
 				</option>
 				}
