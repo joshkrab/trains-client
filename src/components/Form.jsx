@@ -130,7 +130,7 @@ export default function Form() {
 				</div>
 				
 			<div className="trais-output">
-				{trains.map(train => {
+				{trains.length ? trains.map(train => {
 					const unique_id = uuid();
 						return <div key={unique_id} className="train-card">
 						<div className="train-info">
@@ -153,7 +153,7 @@ export default function Form() {
 							</MyButton>
 						</div>
 					</div>
-				})}
+				}) : <div style={{ color: 'red' }}>No trains found!</div>}
 			</div>
 		</form>
 	);

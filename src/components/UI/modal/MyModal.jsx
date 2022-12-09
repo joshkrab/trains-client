@@ -1,18 +1,27 @@
 // rfc
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './MyModal.module.css';
 import MySelect from '../select/MySelect';
 import MyInput from '../input/MyInput';
 import MyButton from '../button/MyButton';
 
 const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
-   const [start, setStart] = useState('Start');
-   const [finish, setFinish] = useState('Finish');
+   const [start, setStart] = useState('');
+   const [finish, setFinish] = useState('');
    const [startDate, setStartDate] = useState('');
    const [finishDate, setFinishDate] = useState('');
    const [startTime, setStartTime] = useState('');
    const [finishTime, setFinishTime] = useState('');
    const rootClasses = [classes.myModal];
+
+   useEffect(() => {
+	if (train) {
+      setStart(train.startCity);
+      setFinish(train.finishCity);
+   };
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
    const newTrain = {
       startCity: start,
       finishCity: finish,
@@ -131,8 +140,16 @@ const MyModal = ({ visible, setVisible, buttonName, train, runRequest }) => {
             <MyButton
                onClick={(event) => {
                   event.preventDefault();
-                  runRequest(newTrain);
-                  setVisible(false);
+                  if (
+                     newTrain.startCity !== newTrain.finishCity &&
+                     newTrain.startCity !== 'Start' && newTrain.finishCity !== 'Finish' &&
+                     startDate && startTime && finishDate && finishTime
+                     ) {
+                     runRequest(newTrain);
+                     setVisible(false);
+                  } else {
+                     alert('Input correct data!')
+                  }
                }}
             >
                { buttonName }

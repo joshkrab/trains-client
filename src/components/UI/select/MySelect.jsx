@@ -12,7 +12,7 @@ const MySelect = ({ options, defaultValue, value, onChange, train }) => {
 			name=''
 			id=''
 			defaultValue={train ? train : defaultValue}
-			//value={train && value}
+			// value={train ? train : value}
 			
 		>
 			<option disabled value={defaultValue}>
