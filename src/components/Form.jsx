@@ -3,6 +3,7 @@ import axios from 'axios';
 import MyInput from './UI/input/MyInput';
 import MyButton from './UI/button/MyButton';
 import MyModal from './UI/modal/MyModal';
+import Loader from './UI/loader/Loader';
 import { v4 as uuid } from 'uuid';
 
 export default function Form() {
@@ -12,12 +13,14 @@ export default function Form() {
 	const [editVisible, setEditVisible] = useState(false);
 	const [currentTrain, setCurrentTrain] = useState({});
 	const [searchValue, setSearchValue] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		axios
 			.get('https://trains-test.herokuapp.com')
 			.then((response) => {
 				setTrains(response.data);
+				setIsLoading(true);
 			})
 			.catch((error) => {
 				console.log(error.message);
@@ -26,51 +29,61 @@ export default function Form() {
 	}, []);
 
 	function addTrain(train) {
+		setIsLoading(false);
 			axios
 			.post('https://trains-test.herokuapp.com', train)
 			.then((response) => {
 				setTrains(response.data);
+				setIsLoading(true);
 			})
 			.catch((error) => {
 				console.log(error.message);
 			});
 	}
 	function editTrain(train) {
+		setIsLoading(false);
 		let trainId = currentTrain._id;
 			axios
 			.patch(`https://trains-test.herokuapp.com?id=${trainId}`, train)
 			.then((response) => {
 				setTrains(response.data);
+				setIsLoading(true);
 			})
 			.catch((error) => {
 				console.log(error.message);
 			});
 	}
 	function deleteTrain(trainId) {
+		setIsLoading(false);
 			axios
 			.delete(`https://trains-test.herokuapp.com?id=${trainId}`)
 			.then((response) => {
 				setTrains(response.data);
+				setIsLoading(true);
 			})
 			.catch((error) => {
 				console.log(error.message);
 			});
 	}
 	function searchTrains(value) {
+		setIsLoading(false);
 			axios
 			.get(`https://trains-test.herokuapp.com?search=${value}`)
 			.then((response) => {
 				setTrains(response.data);
+				setIsLoading(true);
 			})
 			.catch((error) => {
 				console.log(error.message);
 			});
 	}
 	function sortTrains(value) {
+		setIsLoading(false);
 			axios
 			.get(`https://trains-test.herokuapp.com?sort=${value}`)
 			.then((response) => {
 				setTrains(response.data);
+				setIsLoading(true);
 			})
 			.catch((error) => {
 				console.log(error.message);
@@ -129,6 +142,7 @@ export default function Form() {
 			</MyButton>
 				</div>
 				
+			{!isLoading ? <Loader/> :
 			<div className="trais-output">
 				{trains.length ? trains.map(train => {
 					const unique_id = uuid();
@@ -154,7 +168,7 @@ export default function Form() {
 						</div>
 					</div>
 				}) : <div style={{ color: 'red' }}>No trains found!</div>}
-			</div>
+			</div>}
 		</form>
 	);
 }
