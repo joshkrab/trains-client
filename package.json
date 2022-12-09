@@ -1,6 +1,6 @@
 {
-	"homepage": "https://joshkrab.github.io/client-server-front",
 	"name": "test_project",
+	"homepage": "https://joshkrab.github.io/trains-client/",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
